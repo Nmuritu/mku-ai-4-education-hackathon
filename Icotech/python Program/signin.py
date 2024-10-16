@@ -58,18 +58,52 @@ def login():
         Username = entry1.get()
 
         password = entry2.get()
+        
+        class UserAccount:
+            def init(self, username, default_password='Makopolo'):
+                self.username = 'makopolo'
+                self.password = default_password
+                print(f"Account created for {self.username} with default password.")
 
-        if Username == 'Tiktaalik':
-            pass
+            def change_password(self):
+                password = input("Enter your  password: ")
+                if password == 'Makopolo':
+                    new_password = input("Enter a new password: ")
+                    confirm_password = input("Confirm new password: ")
+                    if new_password == confirm_password:
+                        self.password = new_password
+                        print("Password changed successfully!")
+                    else:
+                        print("Passwords do not match. Try again.")
+                else:
+                    print("Incorrect current password.")
+
+
+        if Username == 'makopolo':
+            new_username = input("Enter a new username: ")
+            if new_username == '':
+                tkMsgbox = Msgbox.showwarning('ACCESS DENIED',\
+                           'please create a new username.')
+                label.config(fg = 'red',
+                                    text = p)
+            else:
+                pass
         else:
             p = p + '\nAccess Denied: Username'
 
-        if password == 'Obagina_123':
-            pass
+        if password == 'Makopolo':
+            new_password = input("Enter a new password: ")
+            if new_password == '':
+                tkMsgbox = Msgbox.showwarning('ACCESS DENIED',\
+                            'please create a new password.')
+                label.config(fg = 'red',
+                                    text = p)
+            else:
+                pass
         else:
             p = p+'\nAccess Denied: Password'
 
-        if Username == 'Tiktaalik' and password == 'Obagina_123':
+        if new_username != '' and new_password != '':
             p = p + 'Access Granted'
             label3.config(fg = 'green',
                                 text = p)                   
@@ -90,6 +124,8 @@ def login():
         tkMsgbox4 = Msgbox.showinfo('Exit Program',\
                            'The program will now shutdown Goodbye.')
         root.destroy()
+        user = UserAccount("Shadownet")
+        user.change_password()
 
 # create click button
 button = tk.Button(root, text ='LOGIN', command = login)
