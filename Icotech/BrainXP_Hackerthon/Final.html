@@ -1,0 +1,297 @@
+Shadownet, [17 Oct 2024 17:56:57]
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gamified Learning UI</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom right, #6a0dad, #ff69b4, #ff4500);
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        .card {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .card-header h2, .card-header h3 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .card-content {
+            margin-top: 10px;
+        }
+
+        .progress-section, .points-section, .challenge-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .progress-bar-container {
+            width: 50%;
+            height: 10px;
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: #00ff00;
+            width: 0;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .badges .badge {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .leaderboard ol {
+            list-style: none;
+            padding: 0;
+        }
+
+        .leaderboard li {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        .button:hover {
+            background-color: #218838;
+        }
+
+        /* High Contrast Mode */
+        body.high-contrast {
+            background: black;
+            color: yellow;
+        }
+
+        .high-contrast .card {
+            background-color: black;
+            color: yellow;
+        }
+
+        .high-contrast .button {
+            background-color: yellow;
+            color: black;
+        }
+
+        /* New book section styling */
+        .book-section {
+            margin-top: 20px;
+        }
+
+        .book-section .button {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <h2>Your Learning Journey</h2>
+            </div>
+            <div class="card-content">
+                <div class="progress-section">
+                    <div>
+                        <p>Level <span id="level">3</span></p>
+                        <p>XP: <span id="xp">350</span>/500</p>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div id="xp-progress" class="progress-bar"></div>
+                    </div>
+                </div>
+                <div class="points-section">
+                    <p>Total Points: <span id="points">1250</span></p>
+                    <button id="complete-lesson" class="button">Complete Lesson</button>
+                </div>
+            </div>
+        </div>
+
+
+<!-- Book Section with buttons for opening books -->
+        <div class="book-section">
+            <h3>Select a Book to Start:</h3>
+            <button id="book-1" class="button">Open Book 1</button>
+            <button id="book-2" class="button">Open Book 2</button>
+            <button id="book-3" class="button">Open Book 3</button>
+            <button id="book-4" class="button">Open Book 4</button>
+            <button id="book-5" class="button">Open Book 5</button>
+        </div>
+
+        <!-- Toggle High Contrast and Light Limiter -->
+        <button id="toggle-contrast" class="button">Toggle High Contrast</button>
+        <button id="toggle-light" class="button">Toggle Light Limiter</button>
+
+        <div class="grid">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Badges</h3>
+                </div>
+                <div class="card-content badges">
+                    <div class="badge">🏆 Top Performer</div>
+                    <div class="badge">⭐️ Quick Learner</div>
+                    <div class="badge">🎖 Math Whiz</div>
+                    <div class="badge">⚡️ Streak Master</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3>Leaderboard</h3>
+                </div>
+                <div class="card-content leaderboard">
+                    <ol>
+                        <li><span>1. David</span><span>2500 pts</span></li>
+                        <li><span>2. Felix</span><span>2350 pts</span></li>
+                        <li><span>3. Peter</span><span id="your-points">1250 pts</span></li>
+                        <li><span>4. Klause</span><span>1100 pts</span></li>
+                        <li><span>5. Jordan K.</span><span>950 pts</span></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h3>Weekly Challenge</h3>
+            </div>
+            <div class="card-content">
+                <p>Complete 5 lessons in a row</p>
+                <div class="progress-bar-container">
+                    <div id="challenge-progress" class="progress-bar"></div>
+                </div>
+                <div class="challenge-section">
+                    <p><span id="challenge-percentage">40</span>% complete</p>
+                    <button id="complete-challenge" class="button">Complete Lesson</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let xp = 350;
+        let level = 3;
+        let points = 1250;
+        let challengeProgress = 40;
+        let completedQuestions = 0;
+
+        // OpenAI for question generation
+        async function generateQuestions() {
+            return "What is the sum of 5 + 5?; What is the capital of France?"; // Example of generated questions
+        }
+
+        // Book open logic
+        document.getElementById('book-1').addEventListener('click', async () => {
+            alert("Book 1 opened. Generating questions...");
+            let questions = await generateQuestions();
+            alert("Book 1 Questions: " + questions);
+        });
+
+        document.getElementById('book-2').addEventListener('click', async () => {
+            alert("Book 2 opened. Generating questions...");
+            let questions = await generateQuestions();
+            alert("Book 2 Questions: " + questions);
+        });
+
+        document.getElementById('book-3').addEventListener('click', async () => {
+            alert("Book 3 opened. Generating questions...");
+            let questions = await generateQuestions();
+            alert("Book 3 Questions: " + questions);
+        });
+
+        document.getElementById('book-4').addEventListener('click', async () => {
+            alert("Book 4 opened. Generating questions...");
+            let questions = await generateQuestions();
+            alert("Book 4 Questions: " + questions);
+        });
+
+
+        document.getElementById('book-5').addEventListener('click', async () => {
+            alert("Book 5 opened. Generating questions...");
+            let questions = await generateQuestions();
+            alert("Book 5 Questions: " + questions);
+        });
+
+        // High contrast toggle
+        document.getElementById('toggle-contrast').addEventListener('click', () => {
+            document.body.classList.toggle('high-contrast');
+            alert("High contrast mode toggled.");
+        });
+
+        // Light limiter toggle
+        document.getElementById('toggle-light').addEventListener('click', () => {
+            alert("Light limit applied. Please adjust your screen brightness.");
+        });
+
+        document.getElementById('complete-lesson').addEventListener('click', () => {
+            xp += 50;
+            points += 100;
+
+            if (xp >= 500) {
+                xp -= 500;
+                level += 1;
+            }
+
+            document.getElementById('xp').textContent = xp;
+            document.getElementById('level').textContent = level;
+            document.getElementById('points').textContent = points;
+            document.getElementById('xp-progress').style.width = (xp / 500) * 100 + '%';
+            document.getElementById('your-points').textContent = points + ' pts';
+            alert("Lesson completed! XP and points updated.");
+        });
+
+        document.getElementById('complete-challenge').addEventListener('click', () => {
+            challengeProgress += 20;
+
+            if (challengeProgress >= 100) {
+                points += 500;
+                challengeProgress = 0;
+            }
+
+            document.getElementById('challenge-percentage').textContent = challengeProgress;
+            document.getElementById('challenge-progress').style.width = challengeProgress + '%';
+            document.getElementById('points').textContent = points;
+            document.getElementById('your-points').textContent = points + ' pts';
+            alert("Challenge progress updated!");
+        });
+    </script>
+</body>
+</html>
